@@ -16,14 +16,26 @@
 #include "Piano.h"
 #include "TExaS.h"
 #include "dac.h"
-#include "piano.h"
+#include "Timer0A.h"
+
+
+#define A    1420   // 880 Hz
+#define C    1194   // 1046.5 Hz
+#define G    1594   // 784 Hz
+#define B1   633   // 1975.5 Hz
+#define B    2531   // 987.8 Hz
+
+
+uint32_t sysTickDelay[9] = {0, A, C, B, G, 0, 0, 0, 0};
+
 
 // basic functions defined at end of startup.s
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
+void timerInterrupt(void);
 
-
-int main(void){      
+int main(void){
+	
   TExaS_Init(SW_PIN_PE3210,DAC_PIN_PB3210,ScopeOn);	// bus clock at 80 MHz
 	DisableInterrupts();
   Piano_Init();
@@ -32,8 +44,22 @@ int main(void){
   // other initialization
   EnableInterrupts();
   while(1){ 
+		uint32_t pianoData = Piano_In();
+		
+	  Timer0A_Init(&timerInterrupt, 0x00FFFFFF);
+		
+		Sound_Play((sysTickDelay[pianoData]));
+		
+		
 		
   }    
 }
+
+void timerInterrupt(void) {
+	GPIO_PORTE_DATA_R ^= 0x10;
+}
+
+
+
 
 
