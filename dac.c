@@ -19,6 +19,8 @@
 // Input: none
 // Output: none
 void DAC_Init(void){
+	
+	// Intializes ports PB0-PB5 for DAC
 	 SYSCTL_RCGCGPIO_R |= 0x02;
 	//Wait for clocks to turn on
 	 volatile int dummy;
@@ -38,7 +40,7 @@ void DAC_Init(void){
 // Input=n is converted to n*3.3V/15
 // Output: none
 void DAC_Out(uint32_t data){
-	
+	// set pins PB0-PB5 to value between 0-63 which then gets converted to analog by hardware
 	GPIO_PORTB_DATA_R = (data &= 0x3F);
 	
 }

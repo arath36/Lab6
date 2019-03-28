@@ -34,6 +34,7 @@ void EnableInterrupts(void);  // Enable interrupts
 // Input: none
 // Output: none
 void Sound_Init(void){
+	// Initializes SysTick to produce sound using interrupts
   DAC_Init();
 			
 
@@ -54,7 +55,7 @@ void Sound_Init(void){
 //         if period equals zero, disable sound output
 // Output: none
 void Sound_Play(uint32_t period){
-
+		//sets reload, which ultimatley sets frequency which ultimatley determines sound
 		NVIC_ST_RELOAD_R = period;
 		EnableInterrupts();   // enable sound to be played
 		
@@ -65,6 +66,9 @@ void Sound_Play(uint32_t period){
 
 
 void SysTick_Handler(void) {
+	// handler to be run every time the SYStick hits 0
+	//Sets DAC to some value on given array
+	//Next time will set DAC to the next value and loops back when done
 	DAC_Out(wave[waveCount]);
 	waveCount = (waveCount + 1)%64;
 	 

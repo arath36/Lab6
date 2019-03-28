@@ -19,7 +19,7 @@
 // Input: none 
 // Output: none
 void Piano_Init(void){
-	
+	// Intializes ports PE0-PE4 for use
 		SYSCTL_RCGCGPIO_R |= 0x10;
 		volatile int dummy;
 		dummy ++;
@@ -38,7 +38,8 @@ void Piano_Init(void){
 //   0x01 is just Key0, 0x02 is just Key1, 0x04 is just Key2
 //   bit n is set if key n is pressed
 uint32_t Piano_In(void){
-	
+	// takes data from port E and return the first 4 bits isolated
+	// doesn't mess with any other bits
 	uint32_t portE = GPIO_PORTE_DATA_R;
 	uint32_t data = (portE &= 0x0F);
 	
