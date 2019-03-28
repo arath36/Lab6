@@ -38,7 +38,9 @@ void Piano_Init(void){
 //   0x01 is just Key0, 0x02 is just Key1, 0x04 is just Key2
 //   bit n is set if key n is pressed
 uint32_t Piano_In(void){
-	uint32_t data = (GPIO_PORTE_DATA_R &= 0x0F);
+	
+	uint32_t portE = GPIO_PORTE_DATA_R;
+	uint32_t data = (portE &= 0x0F);
 	
   return (data); // Replace with your code
 }

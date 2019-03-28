@@ -14,6 +14,10 @@
 #include "dac.h"
 #include "../inc/tm4c123gh6pm.h"
 
+void DisableInterrupts(void); // Disable interrupts
+void EnableInterrupts(void);  // Enable interrupts
+
+
 	const unsigned short wave[64] = {				
   32,35,38,41,44,47,49,52,54,56,58,				
   59,61,62,62,63,63,63,62,62,61,59,				
@@ -34,7 +38,6 @@ void Sound_Init(void){
 			
 
 	NVIC_ST_CTRL_R = 0; 
-	NVIC_ST_RELOAD_R = 0x0001FFFF;
 	NVIC_ST_CURRENT_R = 0;
 	NVIC_ST_CTRL_R = 7; 
 }
@@ -51,6 +54,11 @@ void Sound_Init(void){
 //         if period equals zero, disable sound output
 // Output: none
 void Sound_Play(uint32_t period){
+
+		NVIC_ST_RELOAD_R = period;
+		EnableInterrupts();   // enable sound to be played
+		
+		
 
 }
 
